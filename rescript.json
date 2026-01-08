@@ -1,0 +1,20 @@
+{
+  "name": "@greenfinity/gitlab-mcp",
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    }
+  ],
+  "suffix": ".bs.mjs",
+  "namespace": true,
+  "compiler-flags": ["-bs-no-version-header", "-open RescriptCore"],
+  "package-specs": [
+    {
+      "module": "esmodule",
+      "in-source": true
+    }
+  ],
+  "dependencies": ["@rescript/core", "rescript-nodejs", "@greenlabs/ppx-spice"],
+  "ppx-flags": ["@greenlabs/ppx-spice/ppx"]
+}

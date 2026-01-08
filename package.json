@@ -1,0 +1,23 @@
+{
+  "name": "@greenfinity/gitlab-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for GitLab issue management using glab CLI",
+  "type": "module",
+  "main": "src/Cli.bs.mjs",
+  "bin": "./src/Cli.bs.mjs",
+  "scripts": {
+    "build": "yarn rescript:build",
+    "rescript:build": "yarn rescript build",
+    "rescript:dev": "yarn rescript watch",
+    "rescript:clean": "yarn rescript clean"
+  },
+  "dependencies": {
+    "@greenlabs/ppx-spice": "^0.3.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@rescript/core": "^1.6.0",
+    "rescript": "^12.0.0",
+    "rescript-nodejs": "^16.1.0"
+  },
+  "packageManager": "yarn@4.12.0",
+  "license": "MIT"
+}
