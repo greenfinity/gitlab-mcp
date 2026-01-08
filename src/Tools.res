@@ -104,7 +104,108 @@ let issueNoteTool: McpSdk.tool = {
   ),
 }
 
+// CI Pipeline tools
+
+let pipelineListTool: McpSdk.tool = {
+  name: "pipeline_list",
+  description: "List CI/CD pipelines for a project. Filter by status or branch/ref.",
+  inputSchema: McpSdk.makeInputSchema(
+    ~properties=Dict.fromArray([
+      ("repo", McpSdk.makeProperty(~type_="string", ~description="Repository in OWNER/REPO format (optional, uses current repo if not specified)")),
+      ("status", McpSdk.makeEnumProperty(~type_="string", ~description="Filter by pipeline status", ~enum=["running", "pending", "success", "failed", "canceled", "skipped", "manual"])),
+      ("ref", McpSdk.makeProperty(~type_="string", ~description="Filter by branch or tag name")),
+      ("per_page", McpSdk.makeProperty(~type_="number", ~description="Number of pipelines per page (default 30)")),
+      ("page", McpSdk.makeProperty(~type_="number", ~description="Page number")),
+    ]),
+  ),
+}
+
+let pipelineViewTool: McpSdk.tool = {
+  name: "pipeline_view",
+  description: "View details of a specific pipeline including its jobs and status",
+  inputSchema: McpSdk.makeInputSchema(
+    ~properties=Dict.fromArray([
+      ("pipeline_id", McpSdk.makeProperty(~type_="number", ~description="The pipeline ID")),
+      ("repo", McpSdk.makeProperty(~type_="string", ~description="Repository in OWNER/REPO format (optional)")),
+    ]),
+    ~required=["pipeline_id"],
+  ),
+}
+
+let pipelineCreateTool: McpSdk.tool = {
+  name: "pipeline_create",
+  description: "Trigger a new CI/CD pipeline run",
+  inputSchema: McpSdk.makeInputSchema(
+    ~properties=Dict.fromArray([
+      ("repo", McpSdk.makeProperty(~type_="string", ~description="Repository in OWNER/REPO format (optional)")),
+      ("ref", McpSdk.makeProperty(~type_="string", ~description="Branch or tag to run pipeline on (defaults to default branch)")),
+      ("variables", McpSdk.makeProperty(~type_="string", ~description="Pipeline variables in KEY=VALUE format, comma-separated")),
+    ]),
+  ),
+}
+
+let pipelineCancelTool: McpSdk.tool = {
+  name: "pipeline_cancel",
+  description: "Cancel a running pipeline",
+  inputSchema: McpSdk.makeInputSchema(
+    ~properties=Dict.fromArray([
+      ("pipeline_id", McpSdk.makeProperty(~type_="number", ~description="The pipeline ID to cancel")),
+      ("repo", McpSdk.makeProperty(~type_="string", ~description="Repository in OWNER/REPO format (optional)")),
+    ]),
+    ~required=["pipeline_id"],
+  ),
+}
+
+let pipelineRetryTool: McpSdk.tool = {
+  name: "pipeline_retry",
+  description: "Retry a failed pipeline",
+  inputSchema: McpSdk.makeInputSchema(
+    ~properties=Dict.fromArray([
+      ("pipeline_id", McpSdk.makeProperty(~type_="number", ~description="The pipeline ID to retry")),
+      ("repo", McpSdk.makeProperty(~type_="string", ~description="Repository in OWNER/REPO format (optional)")),
+    ]),
+    ~required=["pipeline_id"],
+  ),
+}
+
+let jobListTool: McpSdk.tool = {
+  name: "job_list",
+  description: "List jobs in a pipeline",
+  inputSchema: McpSdk.makeInputSchema(
+    ~properties=Dict.fromArray([
+      ("pipeline_id", McpSdk.makeProperty(~type_="number", ~description="The pipeline ID")),
+      ("repo", McpSdk.makeProperty(~type_="string", ~description="Repository in OWNER/REPO format (optional)")),
+    ]),
+    ~required=["pipeline_id"],
+  ),
+}
+
+let jobViewTool: McpSdk.tool = {
+  name: "job_view",
+  description: "View details of a specific job including its log output",
+  inputSchema: McpSdk.makeInputSchema(
+    ~properties=Dict.fromArray([
+      ("job_id", McpSdk.makeProperty(~type_="number", ~description="The job ID")),
+      ("repo", McpSdk.makeProperty(~type_="string", ~description="Repository in OWNER/REPO format (optional)")),
+    ]),
+    ~required=["job_id"],
+  ),
+}
+
+let jobRetryTool: McpSdk.tool = {
+  name: "job_retry",
+  description: "Retry a specific failed job",
+  inputSchema: McpSdk.makeInputSchema(
+    ~properties=Dict.fromArray([
+      ("job_id", McpSdk.makeProperty(~type_="number", ~description="The job ID to retry")),
+      ("repo", McpSdk.makeProperty(~type_="string", ~description="Repository in OWNER/REPO format (optional)")),
+    ]),
+    ~required=["job_id"],
+  ),
+}
+
 let allTools = [
+  // Issue tools
   issueListTool,
   issueViewTool,
   issueCreateTool,
@@ -112,4 +213,14 @@ let allTools = [
   issueCloseTool,
   issueReopenTool,
   issueNoteTool,
+  // CI Pipeline tools
+  pipelineListTool,
+  pipelineViewTool,
+  pipelineCreateTool,
+  pipelineCancelTool,
+  pipelineRetryTool,
+  // CI Job tools
+  jobListTool,
+  jobViewTool,
+  jobRetryTool,
 ]

@@ -63,6 +63,60 @@ type issueNoteInput = {
   repo?: string,
 }
 
+// CI Pipeline input types
+
+@spice
+type pipelineListInput = {
+  repo?: string,
+  status?: string,
+  ref?: string,
+  per_page?: int,
+  page?: int,
+}
+
+@spice
+type pipelineViewInput = {
+  pipeline_id: int,
+  repo?: string,
+}
+
+@spice
+type pipelineCreateInput = {
+  repo?: string,
+  ref?: string,
+  variables?: string,
+}
+
+@spice
+type pipelineCancelInput = {
+  pipeline_id: int,
+  repo?: string,
+}
+
+@spice
+type pipelineRetryInput = {
+  pipeline_id: int,
+  repo?: string,
+}
+
+@spice
+type jobListInput = {
+  pipeline_id: int,
+  repo?: string,
+}
+
+@spice
+type jobViewInput = {
+  job_id: int,
+  repo?: string,
+}
+
+@spice
+type jobRetryInput = {
+  job_id: int,
+  repo?: string,
+}
+
 // Tool name enum
 type toolName =
   | IssueList
@@ -72,6 +126,14 @@ type toolName =
   | IssueClose
   | IssueReopen
   | IssueNote
+  | PipelineList
+  | PipelineView
+  | PipelineCreate
+  | PipelineCancel
+  | PipelineRetry
+  | JobList
+  | JobView
+  | JobRetry
 
 let toolNameFromString = (name: string): option<toolName> => {
   switch name {
@@ -82,6 +144,14 @@ let toolNameFromString = (name: string): option<toolName> => {
   | "issue_close" => IssueClose->Some
   | "issue_reopen" => IssueReopen->Some
   | "issue_note" => IssueNote->Some
+  | "pipeline_list" => PipelineList->Some
+  | "pipeline_view" => PipelineView->Some
+  | "pipeline_create" => PipelineCreate->Some
+  | "pipeline_cancel" => PipelineCancel->Some
+  | "pipeline_retry" => PipelineRetry->Some
+  | "job_list" => JobList->Some
+  | "job_view" => JobView->Some
+  | "job_retry" => JobRetry->Some
   | _ => None
   }
 }
